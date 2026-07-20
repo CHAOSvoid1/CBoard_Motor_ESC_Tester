@@ -17,7 +17,7 @@ typedef struct
 } Motor_Feedback_t;
 
 void MyCAN_Init(void);
-uint8_t MyCAN_SendMotorCurrent(uint8_t esc_id, int16_t current_raw);
+uint8_t MyCAN_SendMotorCommand(uint8_t motor_id, int16_t command_raw);
 void MyCAN_GetMotorFeedback(Motor_Feedback_t *feedback, uint32_t now_ms);
 uint32_t MyCAN_GetTxOkCount(void);
 uint32_t MyCAN_GetTxFailCount(void);

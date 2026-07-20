@@ -134,7 +134,8 @@ void Vofa_SendMotorStatus(const Motor_Test_Status_t *status)
     /*
      * motor_test 通道定义：
      * 0 angle_raw, 1 speed_rpm, 2 feedback_current_raw, 3 feedback_current_A,
-     * 4 temperature_C(-1 表示 M2006/C610 无此反馈), 5 command_raw, 6 command_A,
+     * 4 temperature_C(-1 表示 M2006/C610 无此反馈), 5 command_raw,
+     * 6 command_display（M2006/M3508/GM6020电流模式单位A；GM6020电压模式单位%）,
      * 7 online, 8 rx_frequency_Hz, 9 tx_fail_count, 10 CAN_ESR,
      * 11 mode, 12 result, 13 auto_phase, 14 forward_peak_rpm, 15 reverse_peak_rpm
      */
@@ -148,7 +149,7 @@ void Vofa_SendMotorStatus(const Motor_Test_Status_t *status)
     channels[4] = -1.0f;
 #endif
     channels[5] = (float)status->command_raw;
-    channels[6] = status->command_amp;
+    channels[6] = status->command_display;
     channels[7] = (float)status->feedback.online;
     channels[8] = (float)status->rx_frequency_hz;
     channels[9] = (float)status->tx_fail_count;

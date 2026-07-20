@@ -120,7 +120,7 @@ void MyCAN_Init(void)
 #endif
 }
 
-uint8_t MyCAN_SendMotorCurrent(uint8_t esc_id, int16_t current_raw)
+uint8_t MyCAN_SendMotorCommand(uint8_t motor_id, int16_t command_raw)
 {
     CanTxMsg tx;
     uint8_t mailbox;
@@ -129,12 +129,12 @@ uint8_t MyCAN_SendMotorCurrent(uint8_t esc_id, int16_t current_raw)
     uint8_t offset;
     uint8_t i;
 
-    if (esc_id < 1u || esc_id > 8u) {
+    if (motor_id < 1u || motor_id > MOTOR_MAX_ID) {
         can_tx_fail_count++;
         return 0u;
     }
 
-    tx.StdId = (esc_id <= 4u) ? 0x200u : 0x1FFu;
+    tx.StdId = (motor_id <= 4u) ? MOTOR_COMMAND_ID_1_TO_4 : MOTOR_COMMAND_ID_5_TO_8;
     tx.ExtId = 0u;
     tx.IDE = CAN_Id_Standard;
     tx.RTR = CAN_RTR_Data;
@@ -143,9 +143,9 @@ uint8_t MyCAN_SendMotorCurrent(uint8_t esc_id, int16_t current_raw)
         tx.Data[i] = 0u;
     }
 
-    offset = (uint8_t)(((esc_id - 1u) % 4u) * 2u);
-    tx.Data[offset] = (uint8_t)((uint16_t)current_raw >> 8);
-    tx.Data[offset + 1u] = (uint8_t)current_raw;
+    offset = (uint8_t)(((motor_id - 1u) % 4u) * 2u);
+    tx.Data[offset] = (uint8_t)((uint16_t)command_raw >> 8);
+    tx.Data[offset + 1u] = (uint8_t)command_raw;
 
     mailbox = CAN_Transmit(TestCAN(), &tx);
     if (mailbox == CAN_TxStatus_NoMailBox) {
@@ -170,7 +170,7 @@ uint8_t MyCAN_SendMotorCurrent(uint8_t esc_id, int16_t current_raw)
 
 static void MyCAN_ParseFeedback(const CanRxMsg *rx)
 {
-    const uint32_t expected_id = 0x200u + TEST_ESC_ID;
+    const uint32_t expected_id = MOTOR_FEEDBACK_BASE_ID + TEST_MOTOR_ID;
 
     if (rx == 0 || rx->IDE != CAN_Id_Standard || rx->RTR != CAN_RTR_Data ||
         rx->DLC < 7u || rx->StdId != expected_id) {

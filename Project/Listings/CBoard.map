@@ -17,7 +17,7 @@ Section Cross References
     main.o(i.main) refers to usart.o(i.Serial_ReadByte) for Serial_ReadByte
     main.o(i.main) refers to motor.o(i.Motor_Test_Update) for Motor_Test_Update
     main.o(i.main) refers to motor.o(i.Motor_Test_GetCommandRaw) for Motor_Test_GetCommandRaw
-    main.o(i.main) refers to mycan.o(i.MyCAN_SendMotorCurrent) for MyCAN_SendMotorCurrent
+    main.o(i.main) refers to mycan.o(i.MyCAN_SendMotorCommand) for MyCAN_SendMotorCommand
     main.o(i.main) refers to motor.o(i.Motor_Test_GetStatus) for Motor_Test_GetStatus
     main.o(i.main) refers to vofa.o(i.Vofa_SendMotorStatus) for Vofa_SendMotorStatus
     main.o(i.main) refers to main.o(.data) for last_control_ms
@@ -300,23 +300,24 @@ Section Cross References
     mycan.o(i.MyCAN_Init) refers to stm32f4xx_can.o(i.CAN_ITConfig) for CAN_ITConfig
     mycan.o(i.MyCAN_ParseFeedback) refers to motor_timer.o(i.Motor_Timer_GetTick) for Motor_Timer_GetTick
     mycan.o(i.MyCAN_ParseFeedback) refers to mycan.o(.bss) for motor_feedback
-    mycan.o(i.MyCAN_SendMotorCurrent) refers to mycan.o(i.TestCAN) for TestCAN
-    mycan.o(i.MyCAN_SendMotorCurrent) refers to stm32f4xx_can.o(i.CAN_Transmit) for CAN_Transmit
-    mycan.o(i.MyCAN_SendMotorCurrent) refers to stm32f4xx_can.o(i.CAN_TransmitStatus) for CAN_TransmitStatus
-    mycan.o(i.MyCAN_SendMotorCurrent) refers to mycan.o(.data) for can_tx_fail_count
-    motor.o(i.Motor_Test_GetCommandRaw) refers to motor.o(i.ClampCurrent) for ClampCurrent
-    motor.o(i.Motor_Test_GetCommandRaw) refers to motor.o(.data) for output_current_raw
+    mycan.o(i.MyCAN_SendMotorCommand) refers to mycan.o(i.TestCAN) for TestCAN
+    mycan.o(i.MyCAN_SendMotorCommand) refers to stm32f4xx_can.o(i.CAN_Transmit) for CAN_Transmit
+    mycan.o(i.MyCAN_SendMotorCommand) refers to stm32f4xx_can.o(i.CAN_TransmitStatus) for CAN_TransmitStatus
+    mycan.o(i.MyCAN_SendMotorCommand) refers to mycan.o(.data) for can_tx_fail_count
+    motor.o(i.Motor_Test_GetCommandRaw) refers to motor.o(i.ClampCommand) for ClampCommand
+    motor.o(i.Motor_Test_GetCommandRaw) refers to motor.o(.data) for output_command_raw
     motor.o(i.Motor_Test_GetStatus) refers to memcpya.o(.text) for __aeabi_memcpy4
     motor.o(i.Motor_Test_GetStatus) refers to motor.o(i.Motor_Test_GetCommandRaw) for Motor_Test_GetCommandRaw
-    motor.o(i.Motor_Test_GetStatus) refers to motor.o(i.RawToAmp) for RawToAmp
+    motor.o(i.Motor_Test_GetStatus) refers to motor.o(i.RawCommandToDisplay) for RawCommandToDisplay
+    motor.o(i.Motor_Test_GetStatus) refers to motor.o(i.RawFeedbackToAmp) for RawFeedbackToAmp
     motor.o(i.Motor_Test_GetStatus) refers to mycan.o(i.MyCAN_GetTxOkCount) for MyCAN_GetTxOkCount
     motor.o(i.Motor_Test_GetStatus) refers to mycan.o(i.MyCAN_GetTxFailCount) for MyCAN_GetTxFailCount
     motor.o(i.Motor_Test_GetStatus) refers to mycan.o(i.MyCAN_GetErrorStatus) for MyCAN_GetErrorStatus
     motor.o(i.Motor_Test_GetStatus) refers to motor.o(.data) for mode_start_ms
     motor.o(i.Motor_Test_HandleCommand) refers to usart.o(i.Serial_Printf) for Serial_Printf
     motor.o(i.Motor_Test_HandleCommand) refers to motor.o(i.StopMotor) for StopMotor
-    motor.o(i.Motor_Test_HandleCommand) refers to motor.o(i.ClampCurrent) for ClampCurrent
-    motor.o(i.Motor_Test_HandleCommand) refers to motor.o(i.RawToMilliAmp) for RawToMilliAmp
+    motor.o(i.Motor_Test_HandleCommand) refers to motor.o(i.ClampCommand) for ClampCommand
+    motor.o(i.Motor_Test_HandleCommand) refers to motor.o(i.RawCommandToMilliDisplay) for RawCommandToMilliDisplay
     motor.o(i.Motor_Test_HandleCommand) refers to motor.o(i.Motor_Test_PrintHelp) for Motor_Test_PrintHelp
     motor.o(i.Motor_Test_HandleCommand) refers to motor.o(.data) for test_mode
     motor.o(i.Motor_Test_Init) refers to motor.o(.data) for test_mode
@@ -324,8 +325,8 @@ Section Cross References
     motor.o(i.Motor_Test_Update) refers to usart.o(i.Serial_Printf) for Serial_Printf
     motor.o(i.Motor_Test_Update) refers to motor.o(i.StopMotor) for StopMotor
     motor.o(i.Motor_Test_Update) refers to motor.o(i.Motor_Test_ResultName) for Motor_Test_ResultName
-    motor.o(i.Motor_Test_Update) refers to motor.o(.data) for output_current_raw
-    motor.o(i.StopMotor) refers to motor.o(.data) for output_current_raw
+    motor.o(i.Motor_Test_Update) refers to motor.o(.data) for output_command_raw
+    motor.o(i.StopMotor) refers to motor.o(.data) for output_command_raw
     motor_timer.o(i.Motor_Timer_GetTick) refers to motor_timer.o(.data) for motor_test_ms_tick
     motor_timer.o(i.Motor_Timer_Init) refers to stm32f4xx_rcc.o(i.RCC_APB1PeriphClockCmd) for RCC_APB1PeriphClockCmd
     motor_timer.o(i.Motor_Timer_Init) refers to stm32f4xx_tim.o(i.TIM_TimeBaseStructInit) for TIM_TimeBaseStructInit
@@ -1183,19 +1184,19 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
     ..\Hardware\Motor.c                      0x00000000   Number         0  motor.o ABSOLUTE
@@ -1336,8 +1337,8 @@ Image Symbol Table
     i.CAN_StructInit                         0x0800077c   Section        0  stm32f4xx_can.o(i.CAN_StructInit)
     i.CAN_Transmit                           0x0800079c   Section        0  stm32f4xx_can.o(i.CAN_Transmit)
     i.CAN_TransmitStatus                     0x080008c4   Section        0  stm32f4xx_can.o(i.CAN_TransmitStatus)
-    i.ClampCurrent                           0x08000964   Section        0  motor.o(i.ClampCurrent)
-    ClampCurrent                             0x08000965   Thumb Code    26  motor.o(i.ClampCurrent)
+    i.ClampCommand                           0x08000964   Section        0  motor.o(i.ClampCommand)
+    ClampCommand                             0x08000965   Thumb Code    26  motor.o(i.ClampCommand)
     i.DebugMon_Handler                       0x08000984   Section        0  stm32f4xx_it.o(i.DebugMon_Handler)
     i.GPIO_Init                              0x08000986   Section        0  stm32f4xx_gpio.o(i.GPIO_Init)
     i.GPIO_PinAFConfig                       0x08000a16   Section        0  stm32f4xx_gpio.o(i.GPIO_PinAFConfig)
@@ -1349,78 +1350,80 @@ Image Symbol Table
     i.Motor_Test_HandleCommand               0x08000b28   Section        0  motor.o(i.Motor_Test_HandleCommand)
     i.Motor_Test_Init                        0x08000ebc   Section        0  motor.o(i.Motor_Test_Init)
     i.Motor_Test_PrintHelp                   0x08000f18   Section        0  motor.o(i.Motor_Test_PrintHelp)
-    i.Motor_Test_ResultName                  0x080010ac   Section        0  motor.o(i.Motor_Test_ResultName)
-    i.Motor_Test_Update                      0x08001160   Section        0  motor.o(i.Motor_Test_Update)
-    i.Motor_Timer_GetTick                    0x08001478   Section        0  motor_timer.o(i.Motor_Timer_GetTick)
-    i.Motor_Timer_Init                       0x08001484   Section        0  motor_timer.o(i.Motor_Timer_Init)
-    i.MyCAN_Filter_Config                    0x080014ee   Section        0  mycan.o(i.MyCAN_Filter_Config)
-    MyCAN_Filter_Config                      0x080014ef   Thumb Code    52  mycan.o(i.MyCAN_Filter_Config)
-    i.MyCAN_GPIO_Config                      0x08001524   Section        0  mycan.o(i.MyCAN_GPIO_Config)
-    MyCAN_GPIO_Config                        0x08001525   Thumb Code    74  mycan.o(i.MyCAN_GPIO_Config)
-    i.MyCAN_GetErrorStatus                   0x08001574   Section        0  mycan.o(i.MyCAN_GetErrorStatus)
-    i.MyCAN_GetMotorFeedback                 0x08001580   Section        0  mycan.o(i.MyCAN_GetMotorFeedback)
-    i.MyCAN_GetTxFailCount                   0x080015e4   Section        0  mycan.o(i.MyCAN_GetTxFailCount)
-    i.MyCAN_GetTxOkCount                     0x080015f0   Section        0  mycan.o(i.MyCAN_GetTxOkCount)
-    i.MyCAN_Init                             0x080015fc   Section        0  mycan.o(i.MyCAN_Init)
-    i.MyCAN_ParseFeedback                    0x08001694   Section        0  mycan.o(i.MyCAN_ParseFeedback)
-    MyCAN_ParseFeedback                      0x08001695   Thumb Code   102  mycan.o(i.MyCAN_ParseFeedback)
-    i.MyCAN_SendMotorCurrent                 0x08001700   Section        0  mycan.o(i.MyCAN_SendMotorCurrent)
-    i.NMI_Handler                            0x080017e4   Section        0  stm32f4xx_it.o(i.NMI_Handler)
-    i.NVIC_Init                              0x080017e8   Section        0  misc.o(i.NVIC_Init)
-    i.NVIC_PriorityGroupConfig               0x08001860   Section        0  misc.o(i.NVIC_PriorityGroupConfig)
-    i.PendSV_Handler                         0x08001874   Section        0  stm32f4xx_it.o(i.PendSV_Handler)
-    i.RCC_AHB1PeriphClockCmd                 0x08001878   Section        0  stm32f4xx_rcc.o(i.RCC_AHB1PeriphClockCmd)
-    i.RCC_APB1PeriphClockCmd                 0x08001898   Section        0  stm32f4xx_rcc.o(i.RCC_APB1PeriphClockCmd)
-    i.RCC_APB1PeriphResetCmd                 0x080018b8   Section        0  stm32f4xx_rcc.o(i.RCC_APB1PeriphResetCmd)
-    i.RCC_APB2PeriphClockCmd                 0x080018d8   Section        0  stm32f4xx_rcc.o(i.RCC_APB2PeriphClockCmd)
-    i.RCC_GetClocksFreq                      0x080018f8   Section        0  stm32f4xx_rcc.o(i.RCC_GetClocksFreq)
-    i.RawToAmp                               0x080019e0   Section        0  motor.o(i.RawToAmp)
-    RawToAmp                                 0x080019e1   Thumb Code    26  motor.o(i.RawToAmp)
-    i.RawToMilliAmp                          0x08001a00   Section        0  motor.o(i.RawToMilliAmp)
-    RawToMilliAmp                            0x08001a01   Thumb Code    20  motor.o(i.RawToMilliAmp)
-    i.SVC_Handler                            0x08001a14   Section        0  stm32f4xx_it.o(i.SVC_Handler)
-    i.Serial_Init                            0x08001a18   Section        0  usart.o(i.Serial_Init)
-    i.Serial_Printf                          0x08001ae4   Section        0  usart.o(i.Serial_Printf)
-    i.Serial_ReadByte                        0x08001c3c   Section        0  usart.o(i.Serial_ReadByte)
-    i.Serial_SendArray                       0x08001c78   Section        0  usart.o(i.Serial_SendArray)
-    i.Serial_SendByte                        0x08001cac   Section        0  usart.o(i.Serial_SendByte)
-    i.Serial_SendSignedLong                  0x08001ccc   Section        0  usart.o(i.Serial_SendSignedLong)
-    Serial_SendSignedLong                    0x08001ccd   Thumb Code    36  usart.o(i.Serial_SendSignedLong)
-    i.Serial_SendString                      0x08001cf0   Section        0  usart.o(i.Serial_SendString)
-    i.Serial_SendUnsignedLong                0x08001d0c   Section        0  usart.o(i.Serial_SendUnsignedLong)
-    Serial_SendUnsignedLong                  0x08001d0d   Thumb Code    88  usart.o(i.Serial_SendUnsignedLong)
-    i.SetSysClock                            0x08001d8c   Section        0  system_stm32f4xx.o(i.SetSysClock)
-    SetSysClock                              0x08001d8d   Thumb Code   220  system_stm32f4xx.o(i.SetSysClock)
-    i.StopMotor                              0x08001e78   Section        0  motor.o(i.StopMotor)
-    StopMotor                                0x08001e79   Thumb Code    38  motor.o(i.StopMotor)
-    i.SysTick_Handler                        0x08001eb4   Section        0  stm32f4xx_it.o(i.SysTick_Handler)
-    i.SystemInit                             0x08001eb8   Section        0  system_stm32f4xx.o(i.SystemInit)
-    i.TIM2_IRQHandler                        0x08001f20   Section        0  motor_timer.o(i.TIM2_IRQHandler)
-    i.TIM_ClearITPendingBit                  0x08001f44   Section        0  stm32f4xx_tim.o(i.TIM_ClearITPendingBit)
-    i.TIM_Cmd                                0x08001f4a   Section        0  stm32f4xx_tim.o(i.TIM_Cmd)
-    i.TIM_GetITStatus                        0x08001f62   Section        0  stm32f4xx_tim.o(i.TIM_GetITStatus)
-    i.TIM_ITConfig                           0x08001f84   Section        0  stm32f4xx_tim.o(i.TIM_ITConfig)
-    i.TIM_TimeBaseInit                       0x08001f98   Section        0  stm32f4xx_tim.o(i.TIM_TimeBaseInit)
-    i.TIM_TimeBaseStructInit                 0x0800201c   Section        0  stm32f4xx_tim.o(i.TIM_TimeBaseStructInit)
-    i.TestCAN                                0x08002030   Section        0  mycan.o(i.TestCAN)
-    TestCAN                                  0x08002031   Thumb Code     4  mycan.o(i.TestCAN)
-    i.USART1_IRQHandler                      0x08002038   Section        0  usart.o(i.USART1_IRQHandler)
-    i.USART_Cmd                              0x080020ac   Section        0  stm32f4xx_usart.o(i.USART_Cmd)
-    i.USART_GetFlagStatus                    0x080020c4   Section        0  stm32f4xx_usart.o(i.USART_GetFlagStatus)
-    i.USART_GetITStatus                      0x080020de   Section        0  stm32f4xx_usart.o(i.USART_GetITStatus)
-    i.USART_ITConfig                         0x08002132   Section        0  stm32f4xx_usart.o(i.USART_ITConfig)
-    i.USART_Init                             0x0800217c   Section        0  stm32f4xx_usart.o(i.USART_Init)
-    i.USART_ReceiveData                      0x08002250   Section        0  stm32f4xx_usart.o(i.USART_ReceiveData)
-    i.USART_SendData                         0x0800225a   Section        0  stm32f4xx_usart.o(i.USART_SendData)
-    i.USART_StructInit                       0x08002262   Section        0  stm32f4xx_usart.o(i.USART_StructInit)
-    i.UsageFault_Handler                     0x0800227a   Section        0  stm32f4xx_it.o(i.UsageFault_Handler)
-    i.Vofa_Init                              0x0800227e   Section        0  vofa.o(i.Vofa_Init)
-    i.Vofa_SendDataWithLabel                 0x08002280   Section        0  vofa.o(i.Vofa_SendDataWithLabel)
-    i.Vofa_SendMotorStatus                   0x08002304   Section        0  vofa.o(i.Vofa_SendMotorStatus)
-    i.__scatterload_copy                     0x08002408   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08002416   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08002418   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.main                                   0x08002428   Section        0  main.o(i.main)
+    i.Motor_Test_ResultName                  0x080010f4   Section        0  motor.o(i.Motor_Test_ResultName)
+    i.Motor_Test_Update                      0x080011a8   Section        0  motor.o(i.Motor_Test_Update)
+    i.Motor_Timer_GetTick                    0x080014c0   Section        0  motor_timer.o(i.Motor_Timer_GetTick)
+    i.Motor_Timer_Init                       0x080014cc   Section        0  motor_timer.o(i.Motor_Timer_Init)
+    i.MyCAN_Filter_Config                    0x08001536   Section        0  mycan.o(i.MyCAN_Filter_Config)
+    MyCAN_Filter_Config                      0x08001537   Thumb Code    52  mycan.o(i.MyCAN_Filter_Config)
+    i.MyCAN_GPIO_Config                      0x0800156c   Section        0  mycan.o(i.MyCAN_GPIO_Config)
+    MyCAN_GPIO_Config                        0x0800156d   Thumb Code    74  mycan.o(i.MyCAN_GPIO_Config)
+    i.MyCAN_GetErrorStatus                   0x080015bc   Section        0  mycan.o(i.MyCAN_GetErrorStatus)
+    i.MyCAN_GetMotorFeedback                 0x080015c8   Section        0  mycan.o(i.MyCAN_GetMotorFeedback)
+    i.MyCAN_GetTxFailCount                   0x0800162c   Section        0  mycan.o(i.MyCAN_GetTxFailCount)
+    i.MyCAN_GetTxOkCount                     0x08001638   Section        0  mycan.o(i.MyCAN_GetTxOkCount)
+    i.MyCAN_Init                             0x08001644   Section        0  mycan.o(i.MyCAN_Init)
+    i.MyCAN_ParseFeedback                    0x080016dc   Section        0  mycan.o(i.MyCAN_ParseFeedback)
+    MyCAN_ParseFeedback                      0x080016dd   Thumb Code   102  mycan.o(i.MyCAN_ParseFeedback)
+    i.MyCAN_SendMotorCommand                 0x08001748   Section        0  mycan.o(i.MyCAN_SendMotorCommand)
+    i.NMI_Handler                            0x0800182c   Section        0  stm32f4xx_it.o(i.NMI_Handler)
+    i.NVIC_Init                              0x08001830   Section        0  misc.o(i.NVIC_Init)
+    i.NVIC_PriorityGroupConfig               0x080018a8   Section        0  misc.o(i.NVIC_PriorityGroupConfig)
+    i.PendSV_Handler                         0x080018bc   Section        0  stm32f4xx_it.o(i.PendSV_Handler)
+    i.RCC_AHB1PeriphClockCmd                 0x080018c0   Section        0  stm32f4xx_rcc.o(i.RCC_AHB1PeriphClockCmd)
+    i.RCC_APB1PeriphClockCmd                 0x080018e0   Section        0  stm32f4xx_rcc.o(i.RCC_APB1PeriphClockCmd)
+    i.RCC_APB1PeriphResetCmd                 0x08001900   Section        0  stm32f4xx_rcc.o(i.RCC_APB1PeriphResetCmd)
+    i.RCC_APB2PeriphClockCmd                 0x08001920   Section        0  stm32f4xx_rcc.o(i.RCC_APB2PeriphClockCmd)
+    i.RCC_GetClocksFreq                      0x08001940   Section        0  stm32f4xx_rcc.o(i.RCC_GetClocksFreq)
+    i.RawCommandToDisplay                    0x08001a28   Section        0  motor.o(i.RawCommandToDisplay)
+    RawCommandToDisplay                      0x08001a29   Thumb Code    26  motor.o(i.RawCommandToDisplay)
+    i.RawCommandToMilliDisplay               0x08001a4c   Section        0  motor.o(i.RawCommandToMilliDisplay)
+    RawCommandToMilliDisplay                 0x08001a4d   Thumb Code    16  motor.o(i.RawCommandToMilliDisplay)
+    i.RawFeedbackToAmp                       0x08001a60   Section        0  motor.o(i.RawFeedbackToAmp)
+    RawFeedbackToAmp                         0x08001a61   Thumb Code    26  motor.o(i.RawFeedbackToAmp)
+    i.SVC_Handler                            0x08001a80   Section        0  stm32f4xx_it.o(i.SVC_Handler)
+    i.Serial_Init                            0x08001a84   Section        0  usart.o(i.Serial_Init)
+    i.Serial_Printf                          0x08001b50   Section        0  usart.o(i.Serial_Printf)
+    i.Serial_ReadByte                        0x08001ca8   Section        0  usart.o(i.Serial_ReadByte)
+    i.Serial_SendArray                       0x08001ce4   Section        0  usart.o(i.Serial_SendArray)
+    i.Serial_SendByte                        0x08001d18   Section        0  usart.o(i.Serial_SendByte)
+    i.Serial_SendSignedLong                  0x08001d38   Section        0  usart.o(i.Serial_SendSignedLong)
+    Serial_SendSignedLong                    0x08001d39   Thumb Code    36  usart.o(i.Serial_SendSignedLong)
+    i.Serial_SendString                      0x08001d5c   Section        0  usart.o(i.Serial_SendString)
+    i.Serial_SendUnsignedLong                0x08001d78   Section        0  usart.o(i.Serial_SendUnsignedLong)
+    Serial_SendUnsignedLong                  0x08001d79   Thumb Code    88  usart.o(i.Serial_SendUnsignedLong)
+    i.SetSysClock                            0x08001df8   Section        0  system_stm32f4xx.o(i.SetSysClock)
+    SetSysClock                              0x08001df9   Thumb Code   220  system_stm32f4xx.o(i.SetSysClock)
+    i.StopMotor                              0x08001ee4   Section        0  motor.o(i.StopMotor)
+    StopMotor                                0x08001ee5   Thumb Code    38  motor.o(i.StopMotor)
+    i.SysTick_Handler                        0x08001f20   Section        0  stm32f4xx_it.o(i.SysTick_Handler)
+    i.SystemInit                             0x08001f24   Section        0  system_stm32f4xx.o(i.SystemInit)
+    i.TIM2_IRQHandler                        0x08001f8c   Section        0  motor_timer.o(i.TIM2_IRQHandler)
+    i.TIM_ClearITPendingBit                  0x08001fb0   Section        0  stm32f4xx_tim.o(i.TIM_ClearITPendingBit)
+    i.TIM_Cmd                                0x08001fb6   Section        0  stm32f4xx_tim.o(i.TIM_Cmd)
+    i.TIM_GetITStatus                        0x08001fce   Section        0  stm32f4xx_tim.o(i.TIM_GetITStatus)
+    i.TIM_ITConfig                           0x08001ff0   Section        0  stm32f4xx_tim.o(i.TIM_ITConfig)
+    i.TIM_TimeBaseInit                       0x08002004   Section        0  stm32f4xx_tim.o(i.TIM_TimeBaseInit)
+    i.TIM_TimeBaseStructInit                 0x08002088   Section        0  stm32f4xx_tim.o(i.TIM_TimeBaseStructInit)
+    i.TestCAN                                0x0800209c   Section        0  mycan.o(i.TestCAN)
+    TestCAN                                  0x0800209d   Thumb Code     4  mycan.o(i.TestCAN)
+    i.USART1_IRQHandler                      0x080020a4   Section        0  usart.o(i.USART1_IRQHandler)
+    i.USART_Cmd                              0x08002118   Section        0  stm32f4xx_usart.o(i.USART_Cmd)
+    i.USART_GetFlagStatus                    0x08002130   Section        0  stm32f4xx_usart.o(i.USART_GetFlagStatus)
+    i.USART_GetITStatus                      0x0800214a   Section        0  stm32f4xx_usart.o(i.USART_GetITStatus)
+    i.USART_ITConfig                         0x0800219e   Section        0  stm32f4xx_usart.o(i.USART_ITConfig)
+    i.USART_Init                             0x080021e8   Section        0  stm32f4xx_usart.o(i.USART_Init)
+    i.USART_ReceiveData                      0x080022bc   Section        0  stm32f4xx_usart.o(i.USART_ReceiveData)
+    i.USART_SendData                         0x080022c6   Section        0  stm32f4xx_usart.o(i.USART_SendData)
+    i.USART_StructInit                       0x080022ce   Section        0  stm32f4xx_usart.o(i.USART_StructInit)
+    i.UsageFault_Handler                     0x080022e6   Section        0  stm32f4xx_it.o(i.UsageFault_Handler)
+    i.Vofa_Init                              0x080022ea   Section        0  vofa.o(i.Vofa_Init)
+    i.Vofa_SendDataWithLabel                 0x080022ec   Section        0  vofa.o(i.Vofa_SendDataWithLabel)
+    i.Vofa_SendMotorStatus                   0x08002370   Section        0  vofa.o(i.Vofa_SendMotorStatus)
+    i.__scatterload_copy                     0x08002474   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08002482   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08002484   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.main                                   0x08002494   Section        0  main.o(i.main)
     .data                                    0x20000000   Section       20  main.o(.data)
     last_control_ms                          0x20000000   Data           4  main.o(.data)
     last_vofa_ms                             0x20000004   Data           4  main.o(.data)
@@ -1439,8 +1442,8 @@ Image Symbol Table
     .data                                    0x20000034   Section       23  motor.o(.data)
     test_mode                                0x20000034   Data           1  motor.o(.data)
     test_result                              0x20000035   Data           1  motor.o(.data)
-    manual_current_raw                       0x20000036   Data           2  motor.o(.data)
-    output_current_raw                       0x20000038   Data           2  motor.o(.data)
+    manual_command_raw                       0x20000036   Data           2  motor.o(.data)
+    output_command_raw                       0x20000038   Data           2  motor.o(.data)
     mode_start_ms                            0x2000003c   Data           4  motor.o(.data)
     last_manual_command_ms                   0x20000040   Data           4  motor.o(.data)
     auto_phase                               0x20000044   Data           1  motor.o(.data)
@@ -1585,61 +1588,61 @@ Image Symbol Table
     Motor_Test_GetStatus                     0x08000a8d   Thumb Code   132  motor.o(i.Motor_Test_GetStatus)
     Motor_Test_HandleCommand                 0x08000b29   Thumb Code   626  motor.o(i.Motor_Test_HandleCommand)
     Motor_Test_Init                          0x08000ebd   Thumb Code    52  motor.o(i.Motor_Test_Init)
-    Motor_Test_PrintHelp                     0x08000f19   Thumb Code    64  motor.o(i.Motor_Test_PrintHelp)
-    Motor_Test_ResultName                    0x080010ad   Thumb Code    60  motor.o(i.Motor_Test_ResultName)
-    Motor_Test_Update                        0x08001161   Thumb Code   556  motor.o(i.Motor_Test_Update)
-    Motor_Timer_GetTick                      0x08001479   Thumb Code     6  motor_timer.o(i.Motor_Timer_GetTick)
-    Motor_Timer_Init                         0x08001485   Thumb Code   106  motor_timer.o(i.Motor_Timer_Init)
-    MyCAN_GetErrorStatus                     0x08001575   Thumb Code    10  mycan.o(i.MyCAN_GetErrorStatus)
-    MyCAN_GetMotorFeedback                   0x08001581   Thumb Code    94  mycan.o(i.MyCAN_GetMotorFeedback)
-    MyCAN_GetTxFailCount                     0x080015e5   Thumb Code     6  mycan.o(i.MyCAN_GetTxFailCount)
-    MyCAN_GetTxOkCount                       0x080015f1   Thumb Code     6  mycan.o(i.MyCAN_GetTxOkCount)
-    MyCAN_Init                               0x080015fd   Thumb Code   148  mycan.o(i.MyCAN_Init)
-    MyCAN_SendMotorCurrent                   0x08001701   Thumb Code   218  mycan.o(i.MyCAN_SendMotorCurrent)
-    NMI_Handler                              0x080017e5   Thumb Code     2  stm32f4xx_it.o(i.NMI_Handler)
-    NVIC_Init                                0x080017e9   Thumb Code   106  misc.o(i.NVIC_Init)
-    NVIC_PriorityGroupConfig                 0x08001861   Thumb Code    10  misc.o(i.NVIC_PriorityGroupConfig)
-    PendSV_Handler                           0x08001875   Thumb Code     2  stm32f4xx_it.o(i.PendSV_Handler)
-    RCC_AHB1PeriphClockCmd                   0x08001879   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_AHB1PeriphClockCmd)
-    RCC_APB1PeriphClockCmd                   0x08001899   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_APB1PeriphClockCmd)
-    RCC_APB1PeriphResetCmd                   0x080018b9   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_APB1PeriphResetCmd)
-    RCC_APB2PeriphClockCmd                   0x080018d9   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_APB2PeriphClockCmd)
-    RCC_GetClocksFreq                        0x080018f9   Thumb Code   214  stm32f4xx_rcc.o(i.RCC_GetClocksFreq)
-    SVC_Handler                              0x08001a15   Thumb Code     2  stm32f4xx_it.o(i.SVC_Handler)
-    Serial_Init                              0x08001a19   Thumb Code   192  usart.o(i.Serial_Init)
-    Serial_Printf                            0x08001ae5   Thumb Code   336  usart.o(i.Serial_Printf)
-    Serial_ReadByte                          0x08001c3d   Thumb Code    48  usart.o(i.Serial_ReadByte)
-    Serial_SendArray                         0x08001c79   Thumb Code    46  usart.o(i.Serial_SendArray)
-    Serial_SendByte                          0x08001cad   Thumb Code    28  usart.o(i.Serial_SendByte)
-    Serial_SendString                        0x08001cf1   Thumb Code    28  usart.o(i.Serial_SendString)
-    SysTick_Handler                          0x08001eb5   Thumb Code     2  stm32f4xx_it.o(i.SysTick_Handler)
-    SystemInit                               0x08001eb9   Thumb Code    88  system_stm32f4xx.o(i.SystemInit)
-    TIM2_IRQHandler                          0x08001f21   Thumb Code    32  motor_timer.o(i.TIM2_IRQHandler)
-    TIM_ClearITPendingBit                    0x08001f45   Thumb Code     6  stm32f4xx_tim.o(i.TIM_ClearITPendingBit)
-    TIM_Cmd                                  0x08001f4b   Thumb Code    24  stm32f4xx_tim.o(i.TIM_Cmd)
-    TIM_GetITStatus                          0x08001f63   Thumb Code    34  stm32f4xx_tim.o(i.TIM_GetITStatus)
-    TIM_ITConfig                             0x08001f85   Thumb Code    18  stm32f4xx_tim.o(i.TIM_ITConfig)
-    TIM_TimeBaseInit                         0x08001f99   Thumb Code   104  stm32f4xx_tim.o(i.TIM_TimeBaseInit)
-    TIM_TimeBaseStructInit                   0x0800201d   Thumb Code    18  stm32f4xx_tim.o(i.TIM_TimeBaseStructInit)
-    USART1_IRQHandler                        0x08002039   Thumb Code    96  usart.o(i.USART1_IRQHandler)
-    USART_Cmd                                0x080020ad   Thumb Code    24  stm32f4xx_usart.o(i.USART_Cmd)
-    USART_GetFlagStatus                      0x080020c5   Thumb Code    26  stm32f4xx_usart.o(i.USART_GetFlagStatus)
-    USART_GetITStatus                        0x080020df   Thumb Code    84  stm32f4xx_usart.o(i.USART_GetITStatus)
-    USART_ITConfig                           0x08002133   Thumb Code    74  stm32f4xx_usart.o(i.USART_ITConfig)
-    USART_Init                               0x0800217d   Thumb Code   204  stm32f4xx_usart.o(i.USART_Init)
-    USART_ReceiveData                        0x08002251   Thumb Code    10  stm32f4xx_usart.o(i.USART_ReceiveData)
-    USART_SendData                           0x0800225b   Thumb Code     8  stm32f4xx_usart.o(i.USART_SendData)
-    USART_StructInit                         0x08002263   Thumb Code    24  stm32f4xx_usart.o(i.USART_StructInit)
-    UsageFault_Handler                       0x0800227b   Thumb Code     4  stm32f4xx_it.o(i.UsageFault_Handler)
-    Vofa_Init                                0x0800227f   Thumb Code     2  vofa.o(i.Vofa_Init)
-    Vofa_SendDataWithLabel                   0x08002281   Thumb Code   130  vofa.o(i.Vofa_SendDataWithLabel)
-    Vofa_SendMotorStatus                     0x08002305   Thumb Code   248  vofa.o(i.Vofa_SendMotorStatus)
-    __scatterload_copy                       0x08002409   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08002417   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08002419   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    main                                     0x08002429   Thumb Code   212  main.o(i.main)
-    Region$$Table$$Base                      0x08002510   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08002530   Number         0  anon$$obj.o(Region$$Table)
+    Motor_Test_PrintHelp                     0x08000f19   Thumb Code    72  motor.o(i.Motor_Test_PrintHelp)
+    Motor_Test_ResultName                    0x080010f5   Thumb Code    60  motor.o(i.Motor_Test_ResultName)
+    Motor_Test_Update                        0x080011a9   Thumb Code   556  motor.o(i.Motor_Test_Update)
+    Motor_Timer_GetTick                      0x080014c1   Thumb Code     6  motor_timer.o(i.Motor_Timer_GetTick)
+    Motor_Timer_Init                         0x080014cd   Thumb Code   106  motor_timer.o(i.Motor_Timer_Init)
+    MyCAN_GetErrorStatus                     0x080015bd   Thumb Code    10  mycan.o(i.MyCAN_GetErrorStatus)
+    MyCAN_GetMotorFeedback                   0x080015c9   Thumb Code    94  mycan.o(i.MyCAN_GetMotorFeedback)
+    MyCAN_GetTxFailCount                     0x0800162d   Thumb Code     6  mycan.o(i.MyCAN_GetTxFailCount)
+    MyCAN_GetTxOkCount                       0x08001639   Thumb Code     6  mycan.o(i.MyCAN_GetTxOkCount)
+    MyCAN_Init                               0x08001645   Thumb Code   148  mycan.o(i.MyCAN_Init)
+    MyCAN_SendMotorCommand                   0x08001749   Thumb Code   218  mycan.o(i.MyCAN_SendMotorCommand)
+    NMI_Handler                              0x0800182d   Thumb Code     2  stm32f4xx_it.o(i.NMI_Handler)
+    NVIC_Init                                0x08001831   Thumb Code   106  misc.o(i.NVIC_Init)
+    NVIC_PriorityGroupConfig                 0x080018a9   Thumb Code    10  misc.o(i.NVIC_PriorityGroupConfig)
+    PendSV_Handler                           0x080018bd   Thumb Code     2  stm32f4xx_it.o(i.PendSV_Handler)
+    RCC_AHB1PeriphClockCmd                   0x080018c1   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_AHB1PeriphClockCmd)
+    RCC_APB1PeriphClockCmd                   0x080018e1   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_APB1PeriphClockCmd)
+    RCC_APB1PeriphResetCmd                   0x08001901   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_APB1PeriphResetCmd)
+    RCC_APB2PeriphClockCmd                   0x08001921   Thumb Code    26  stm32f4xx_rcc.o(i.RCC_APB2PeriphClockCmd)
+    RCC_GetClocksFreq                        0x08001941   Thumb Code   214  stm32f4xx_rcc.o(i.RCC_GetClocksFreq)
+    SVC_Handler                              0x08001a81   Thumb Code     2  stm32f4xx_it.o(i.SVC_Handler)
+    Serial_Init                              0x08001a85   Thumb Code   192  usart.o(i.Serial_Init)
+    Serial_Printf                            0x08001b51   Thumb Code   336  usart.o(i.Serial_Printf)
+    Serial_ReadByte                          0x08001ca9   Thumb Code    48  usart.o(i.Serial_ReadByte)
+    Serial_SendArray                         0x08001ce5   Thumb Code    46  usart.o(i.Serial_SendArray)
+    Serial_SendByte                          0x08001d19   Thumb Code    28  usart.o(i.Serial_SendByte)
+    Serial_SendString                        0x08001d5d   Thumb Code    28  usart.o(i.Serial_SendString)
+    SysTick_Handler                          0x08001f21   Thumb Code     2  stm32f4xx_it.o(i.SysTick_Handler)
+    SystemInit                               0x08001f25   Thumb Code    88  system_stm32f4xx.o(i.SystemInit)
+    TIM2_IRQHandler                          0x08001f8d   Thumb Code    32  motor_timer.o(i.TIM2_IRQHandler)
+    TIM_ClearITPendingBit                    0x08001fb1   Thumb Code     6  stm32f4xx_tim.o(i.TIM_ClearITPendingBit)
+    TIM_Cmd                                  0x08001fb7   Thumb Code    24  stm32f4xx_tim.o(i.TIM_Cmd)
+    TIM_GetITStatus                          0x08001fcf   Thumb Code    34  stm32f4xx_tim.o(i.TIM_GetITStatus)
+    TIM_ITConfig                             0x08001ff1   Thumb Code    18  stm32f4xx_tim.o(i.TIM_ITConfig)
+    TIM_TimeBaseInit                         0x08002005   Thumb Code   104  stm32f4xx_tim.o(i.TIM_TimeBaseInit)
+    TIM_TimeBaseStructInit                   0x08002089   Thumb Code    18  stm32f4xx_tim.o(i.TIM_TimeBaseStructInit)
+    USART1_IRQHandler                        0x080020a5   Thumb Code    96  usart.o(i.USART1_IRQHandler)
+    USART_Cmd                                0x08002119   Thumb Code    24  stm32f4xx_usart.o(i.USART_Cmd)
+    USART_GetFlagStatus                      0x08002131   Thumb Code    26  stm32f4xx_usart.o(i.USART_GetFlagStatus)
+    USART_GetITStatus                        0x0800214b   Thumb Code    84  stm32f4xx_usart.o(i.USART_GetITStatus)
+    USART_ITConfig                           0x0800219f   Thumb Code    74  stm32f4xx_usart.o(i.USART_ITConfig)
+    USART_Init                               0x080021e9   Thumb Code   204  stm32f4xx_usart.o(i.USART_Init)
+    USART_ReceiveData                        0x080022bd   Thumb Code    10  stm32f4xx_usart.o(i.USART_ReceiveData)
+    USART_SendData                           0x080022c7   Thumb Code     8  stm32f4xx_usart.o(i.USART_SendData)
+    USART_StructInit                         0x080022cf   Thumb Code    24  stm32f4xx_usart.o(i.USART_StructInit)
+    UsageFault_Handler                       0x080022e7   Thumb Code     4  stm32f4xx_it.o(i.UsageFault_Handler)
+    Vofa_Init                                0x080022eb   Thumb Code     2  vofa.o(i.Vofa_Init)
+    Vofa_SendDataWithLabel                   0x080022ed   Thumb Code   130  vofa.o(i.Vofa_SendDataWithLabel)
+    Vofa_SendMotorStatus                     0x08002371   Thumb Code   248  vofa.o(i.Vofa_SendMotorStatus)
+    __scatterload_copy                       0x08002475   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08002483   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08002485   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    main                                     0x08002495   Thumb Code   212  main.o(i.main)
+    Region$$Table$$Base                      0x0800257c   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0800259c   Number         0  anon$$obj.o(Region$$Table)
     __initial_sp                             0x200004a8   Data           0  startup_stm32f40xx.o(STACK)
 
 
@@ -1650,154 +1653,155 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00002580, Max: 0x00100000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000025ec, Max: 0x00100000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00002530, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000259c, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x08000000   0x08000000   0x00000188   Data   RO         5140    RESET               startup_stm32f40xx.o
-    0x08000188   0x08000188   0x00000000   Code   RO         5519  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000188   0x08000188   0x00000004   Code   RO         5526    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x0800018c   0x0800018c   0x00000004   Code   RO         5529    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         5531    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         5533    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000190   0x08000190   0x00000008   Code   RO         5534    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         5536    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         5538    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000198   0x08000198   0x00000004   Code   RO         5527    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
-    0x0800019c   0x0800019c   0x00000024   Code   RO         5141    .text               startup_stm32f40xx.o
-    0x080001c0   0x080001c0   0x00000024   Code   RO         5522    .text               mc_w.l(memcpya.o)
-    0x080001e4   0x080001e4   0x00000024   Code   RO         5540    .text               mc_w.l(init.o)
-    0x08000208   0x08000208   0x00000016   Code   RO         5451    i.AppendChar        vofa.o
+    0x08000000   0x08000000   0x00000188   Data   RO         5241    RESET               startup_stm32f40xx.o
+    0x08000188   0x08000188   0x00000000   Code   RO         5628  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000188   0x08000188   0x00000004   Code   RO         5635    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x0800018c   0x0800018c   0x00000004   Code   RO         5638    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         5640    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         5642    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000190   0x08000190   0x00000008   Code   RO         5643    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         5645    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         5647    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000198   0x08000198   0x00000004   Code   RO         5636    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x0800019c   0x0800019c   0x00000024   Code   RO         5242    .text               startup_stm32f40xx.o
+    0x080001c0   0x080001c0   0x00000024   Code   RO         5631    .text               mc_w.l(memcpya.o)
+    0x080001e4   0x080001e4   0x00000024   Code   RO         5649    .text               mc_w.l(init.o)
+    0x08000208   0x08000208   0x00000016   Code   RO         5560    i.AppendChar        vofa.o
     0x0800021e   0x0800021e   0x00000002   PAD
-    0x08000220   0x08000220   0x000000d8   Code   RO         5452    i.AppendFloatFixed3  vofa.o
-    0x080002f8   0x080002f8   0x00000026   Code   RO         5453    i.AppendString      vofa.o
-    0x0800031e   0x0800031e   0x00000068   Code   RO         5454    i.AppendUnsigned    vofa.o
+    0x08000220   0x08000220   0x000000d8   Code   RO         5561    i.AppendFloatFixed3  vofa.o
+    0x080002f8   0x080002f8   0x00000026   Code   RO         5562    i.AppendString      vofa.o
+    0x0800031e   0x0800031e   0x00000068   Code   RO         5563    i.AppendUnsigned    vofa.o
     0x08000386   0x08000386   0x00000004   Code   RO          155    i.BusFault_Handler  stm32f4xx_it.o
     0x0800038a   0x0800038a   0x00000002   PAD
-    0x0800038c   0x0800038c   0x0000002c   Code   RO         5230    i.CAN1_RX0_IRQHandler  mycan.o
-    0x080003b8   0x080003b8   0x00000024   Code   RO         5231    i.CAN2_RX1_IRQHandler  mycan.o
-    0x080003dc   0x080003dc   0x00000038   Code   RO          569    i.CAN_DeInit        stm32f4xx_can.o
-    0x08000414   0x08000414   0x00000108   Code   RO          571    i.CAN_FilterInit    stm32f4xx_can.o
-    0x0800051c   0x0800051c   0x00000012   Code   RO          577    i.CAN_ITConfig      stm32f4xx_can.o
-    0x0800052e   0x0800052e   0x00000114   Code   RO          578    i.CAN_Init          stm32f4xx_can.o
-    0x08000642   0x08000642   0x0000001e   Code   RO          579    i.CAN_MessagePending  stm32f4xx_can.o
-    0x08000660   0x08000660   0x000000e8   Code   RO          581    i.CAN_Receive       stm32f4xx_can.o
-    0x08000748   0x08000748   0x00000034   Code   RO          582    i.CAN_SlaveStartBank  stm32f4xx_can.o
-    0x0800077c   0x0800077c   0x00000020   Code   RO          584    i.CAN_StructInit    stm32f4xx_can.o
-    0x0800079c   0x0800079c   0x00000126   Code   RO          586    i.CAN_Transmit      stm32f4xx_can.o
+    0x0800038c   0x0800038c   0x0000002c   Code   RO         5331    i.CAN1_RX0_IRQHandler  mycan.o
+    0x080003b8   0x080003b8   0x00000024   Code   RO         5332    i.CAN2_RX1_IRQHandler  mycan.o
+    0x080003dc   0x080003dc   0x00000038   Code   RO          670    i.CAN_DeInit        stm32f4xx_can.o
+    0x08000414   0x08000414   0x00000108   Code   RO          672    i.CAN_FilterInit    stm32f4xx_can.o
+    0x0800051c   0x0800051c   0x00000012   Code   RO          678    i.CAN_ITConfig      stm32f4xx_can.o
+    0x0800052e   0x0800052e   0x00000114   Code   RO          679    i.CAN_Init          stm32f4xx_can.o
+    0x08000642   0x08000642   0x0000001e   Code   RO          680    i.CAN_MessagePending  stm32f4xx_can.o
+    0x08000660   0x08000660   0x000000e8   Code   RO          682    i.CAN_Receive       stm32f4xx_can.o
+    0x08000748   0x08000748   0x00000034   Code   RO          683    i.CAN_SlaveStartBank  stm32f4xx_can.o
+    0x0800077c   0x0800077c   0x00000020   Code   RO          685    i.CAN_StructInit    stm32f4xx_can.o
+    0x0800079c   0x0800079c   0x00000126   Code   RO          687    i.CAN_Transmit      stm32f4xx_can.o
     0x080008c2   0x080008c2   0x00000002   PAD
-    0x080008c4   0x080008c4   0x000000a0   Code   RO          587    i.CAN_TransmitStatus  stm32f4xx_can.o
-    0x08000964   0x08000964   0x00000020   Code   RO         5322    i.ClampCurrent      motor.o
+    0x080008c4   0x080008c4   0x000000a0   Code   RO          688    i.CAN_TransmitStatus  stm32f4xx_can.o
+    0x08000964   0x08000964   0x00000020   Code   RO         5423    i.ClampCommand      motor.o
     0x08000984   0x08000984   0x00000002   Code   RO          156    i.DebugMon_Handler  stm32f4xx_it.o
-    0x08000986   0x08000986   0x00000090   Code   RO         2011    i.GPIO_Init         stm32f4xx_gpio.o
-    0x08000a16   0x08000a16   0x00000046   Code   RO         2012    i.GPIO_PinAFConfig  stm32f4xx_gpio.o
-    0x08000a5c   0x08000a5c   0x00000012   Code   RO         2020    i.GPIO_StructInit   stm32f4xx_gpio.o
+    0x08000986   0x08000986   0x00000090   Code   RO         2112    i.GPIO_Init         stm32f4xx_gpio.o
+    0x08000a16   0x08000a16   0x00000046   Code   RO         2113    i.GPIO_PinAFConfig  stm32f4xx_gpio.o
+    0x08000a5c   0x08000a5c   0x00000012   Code   RO         2121    i.GPIO_StructInit   stm32f4xx_gpio.o
     0x08000a6e   0x08000a6e   0x00000004   Code   RO          157    i.HardFault_Handler  stm32f4xx_it.o
     0x08000a72   0x08000a72   0x00000004   Code   RO          158    i.MemManage_Handler  stm32f4xx_it.o
     0x08000a76   0x08000a76   0x00000002   PAD
-    0x08000a78   0x08000a78   0x00000014   Code   RO         5323    i.Motor_Test_GetCommandRaw  motor.o
-    0x08000a8c   0x08000a8c   0x0000009c   Code   RO         5324    i.Motor_Test_GetStatus  motor.o
-    0x08000b28   0x08000b28   0x00000394   Code   RO         5325    i.Motor_Test_HandleCommand  motor.o
-    0x08000ebc   0x08000ebc   0x0000005c   Code   RO         5326    i.Motor_Test_Init   motor.o
-    0x08000f18   0x08000f18   0x00000194   Code   RO         5328    i.Motor_Test_PrintHelp  motor.o
-    0x080010ac   0x080010ac   0x000000b4   Code   RO         5329    i.Motor_Test_ResultName  motor.o
-    0x08001160   0x08001160   0x00000318   Code   RO         5330    i.Motor_Test_Update  motor.o
-    0x08001478   0x08001478   0x0000000c   Code   RO         5413    i.Motor_Timer_GetTick  motor_timer.o
-    0x08001484   0x08001484   0x0000006a   Code   RO         5414    i.Motor_Timer_Init  motor_timer.o
-    0x080014ee   0x080014ee   0x00000034   Code   RO         5232    i.MyCAN_Filter_Config  mycan.o
-    0x08001522   0x08001522   0x00000002   PAD
-    0x08001524   0x08001524   0x00000050   Code   RO         5233    i.MyCAN_GPIO_Config  mycan.o
-    0x08001574   0x08001574   0x0000000a   Code   RO         5234    i.MyCAN_GetErrorStatus  mycan.o
-    0x0800157e   0x0800157e   0x00000002   PAD
-    0x08001580   0x08001580   0x00000064   Code   RO         5235    i.MyCAN_GetMotorFeedback  mycan.o
-    0x080015e4   0x080015e4   0x0000000c   Code   RO         5236    i.MyCAN_GetTxFailCount  mycan.o
-    0x080015f0   0x080015f0   0x0000000c   Code   RO         5237    i.MyCAN_GetTxOkCount  mycan.o
-    0x080015fc   0x080015fc   0x00000098   Code   RO         5238    i.MyCAN_Init        mycan.o
-    0x08001694   0x08001694   0x0000006c   Code   RO         5239    i.MyCAN_ParseFeedback  mycan.o
-    0x08001700   0x08001700   0x000000e4   Code   RO         5240    i.MyCAN_SendMotorCurrent  mycan.o
-    0x080017e4   0x080017e4   0x00000002   Code   RO          159    i.NMI_Handler       stm32f4xx_it.o
-    0x080017e6   0x080017e6   0x00000002   PAD
-    0x080017e8   0x080017e8   0x00000078   Code   RO          271    i.NVIC_Init         misc.o
-    0x08001860   0x08001860   0x00000014   Code   RO          272    i.NVIC_PriorityGroupConfig  misc.o
-    0x08001874   0x08001874   0x00000002   Code   RO          160    i.PendSV_Handler    stm32f4xx_it.o
-    0x08001876   0x08001876   0x00000002   PAD
-    0x08001878   0x08001878   0x00000020   Code   RO         2937    i.RCC_AHB1PeriphClockCmd  stm32f4xx_rcc.o
-    0x08001898   0x08001898   0x00000020   Code   RO         2946    i.RCC_APB1PeriphClockCmd  stm32f4xx_rcc.o
-    0x080018b8   0x080018b8   0x00000020   Code   RO         2948    i.RCC_APB1PeriphResetCmd  stm32f4xx_rcc.o
-    0x080018d8   0x080018d8   0x00000020   Code   RO         2949    i.RCC_APB2PeriphClockCmd  stm32f4xx_rcc.o
-    0x080018f8   0x080018f8   0x000000e8   Code   RO         2958    i.RCC_GetClocksFreq  stm32f4xx_rcc.o
-    0x080019e0   0x080019e0   0x00000020   Code   RO         5331    i.RawToAmp          motor.o
-    0x08001a00   0x08001a00   0x00000014   Code   RO         5332    i.RawToMilliAmp     motor.o
-    0x08001a14   0x08001a14   0x00000002   Code   RO          161    i.SVC_Handler       stm32f4xx_it.o
-    0x08001a16   0x08001a16   0x00000002   PAD
-    0x08001a18   0x08001a18   0x000000cc   Code   RO         5149    i.Serial_Init       usart.o
-    0x08001ae4   0x08001ae4   0x00000158   Code   RO         5150    i.Serial_Printf     usart.o
-    0x08001c3c   0x08001c3c   0x0000003c   Code   RO         5151    i.Serial_ReadByte   usart.o
-    0x08001c78   0x08001c78   0x00000034   Code   RO         5152    i.Serial_SendArray  usart.o
-    0x08001cac   0x08001cac   0x00000020   Code   RO         5153    i.Serial_SendByte   usart.o
-    0x08001ccc   0x08001ccc   0x00000024   Code   RO         5154    i.Serial_SendSignedLong  usart.o
-    0x08001cf0   0x08001cf0   0x0000001c   Code   RO         5155    i.Serial_SendString  usart.o
-    0x08001d0c   0x08001d0c   0x00000080   Code   RO         5156    i.Serial_SendUnsignedLong  usart.o
-    0x08001d8c   0x08001d8c   0x000000ec   Code   RO          230    i.SetSysClock       system_stm32f4xx.o
-    0x08001e78   0x08001e78   0x0000003c   Code   RO         5333    i.StopMotor         motor.o
-    0x08001eb4   0x08001eb4   0x00000002   Code   RO          162    i.SysTick_Handler   stm32f4xx_it.o
-    0x08001eb6   0x08001eb6   0x00000002   PAD
-    0x08001eb8   0x08001eb8   0x00000068   Code   RO          232    i.SystemInit        system_stm32f4xx.o
-    0x08001f20   0x08001f20   0x00000024   Code   RO         5415    i.TIM2_IRQHandler   motor_timer.o
-    0x08001f44   0x08001f44   0x00000006   Code   RO         4328    i.TIM_ClearITPendingBit  stm32f4xx_tim.o
-    0x08001f4a   0x08001f4a   0x00000018   Code   RO         4333    i.TIM_Cmd           stm32f4xx_tim.o
-    0x08001f62   0x08001f62   0x00000022   Code   RO         4354    i.TIM_GetITStatus   stm32f4xx_tim.o
-    0x08001f84   0x08001f84   0x00000012   Code   RO         4358    i.TIM_ITConfig      stm32f4xx_tim.o
-    0x08001f96   0x08001f96   0x00000002   PAD
-    0x08001f98   0x08001f98   0x00000084   Code   RO         4405    i.TIM_TimeBaseInit  stm32f4xx_tim.o
-    0x0800201c   0x0800201c   0x00000012   Code   RO         4406    i.TIM_TimeBaseStructInit  stm32f4xx_tim.o
-    0x0800202e   0x0800202e   0x00000002   PAD
-    0x08002030   0x08002030   0x00000008   Code   RO         5241    i.TestCAN           mycan.o
-    0x08002038   0x08002038   0x00000074   Code   RO         5157    i.USART1_IRQHandler  usart.o
-    0x080020ac   0x080020ac   0x00000018   Code   RO         4887    i.USART_Cmd         stm32f4xx_usart.o
-    0x080020c4   0x080020c4   0x0000001a   Code   RO         4890    i.USART_GetFlagStatus  stm32f4xx_usart.o
-    0x080020de   0x080020de   0x00000054   Code   RO         4891    i.USART_GetITStatus  stm32f4xx_usart.o
-    0x08002132   0x08002132   0x0000004a   Code   RO         4893    i.USART_ITConfig    stm32f4xx_usart.o
-    0x0800217c   0x0800217c   0x000000d4   Code   RO         4894    i.USART_Init        stm32f4xx_usart.o
-    0x08002250   0x08002250   0x0000000a   Code   RO         4901    i.USART_ReceiveData  stm32f4xx_usart.o
-    0x0800225a   0x0800225a   0x00000008   Code   RO         4904    i.USART_SendData    stm32f4xx_usart.o
-    0x08002262   0x08002262   0x00000018   Code   RO         4910    i.USART_StructInit  stm32f4xx_usart.o
-    0x0800227a   0x0800227a   0x00000004   Code   RO          163    i.UsageFault_Handler  stm32f4xx_it.o
-    0x0800227e   0x0800227e   0x00000002   Code   RO         5455    i.Vofa_Init         vofa.o
-    0x08002280   0x08002280   0x00000082   Code   RO         5457    i.Vofa_SendDataWithLabel  vofa.o
-    0x08002302   0x08002302   0x00000002   PAD
-    0x08002304   0x08002304   0x00000104   Code   RO         5458    i.Vofa_SendMotorStatus  vofa.o
-    0x08002408   0x08002408   0x0000000e   Code   RO         5544    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08002416   0x08002416   0x00000002   Code   RO         5545    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08002418   0x08002418   0x0000000e   Code   RO         5546    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08002426   0x08002426   0x00000002   PAD
-    0x08002428   0x08002428   0x000000e8   Code   RO            4    i.main              main.o
-    0x08002510   0x08002510   0x00000020   Data   RO         5542    Region$$Table       anon$$obj.o
+    0x08000a78   0x08000a78   0x00000014   Code   RO         5424    i.Motor_Test_GetCommandRaw  motor.o
+    0x08000a8c   0x08000a8c   0x0000009c   Code   RO         5425    i.Motor_Test_GetStatus  motor.o
+    0x08000b28   0x08000b28   0x00000394   Code   RO         5426    i.Motor_Test_HandleCommand  motor.o
+    0x08000ebc   0x08000ebc   0x0000005c   Code   RO         5427    i.Motor_Test_Init   motor.o
+    0x08000f18   0x08000f18   0x000001dc   Code   RO         5429    i.Motor_Test_PrintHelp  motor.o
+    0x080010f4   0x080010f4   0x000000b4   Code   RO         5430    i.Motor_Test_ResultName  motor.o
+    0x080011a8   0x080011a8   0x00000318   Code   RO         5431    i.Motor_Test_Update  motor.o
+    0x080014c0   0x080014c0   0x0000000c   Code   RO         5519    i.Motor_Timer_GetTick  motor_timer.o
+    0x080014cc   0x080014cc   0x0000006a   Code   RO         5520    i.Motor_Timer_Init  motor_timer.o
+    0x08001536   0x08001536   0x00000034   Code   RO         5333    i.MyCAN_Filter_Config  mycan.o
+    0x0800156a   0x0800156a   0x00000002   PAD
+    0x0800156c   0x0800156c   0x00000050   Code   RO         5334    i.MyCAN_GPIO_Config  mycan.o
+    0x080015bc   0x080015bc   0x0000000a   Code   RO         5335    i.MyCAN_GetErrorStatus  mycan.o
+    0x080015c6   0x080015c6   0x00000002   PAD
+    0x080015c8   0x080015c8   0x00000064   Code   RO         5336    i.MyCAN_GetMotorFeedback  mycan.o
+    0x0800162c   0x0800162c   0x0000000c   Code   RO         5337    i.MyCAN_GetTxFailCount  mycan.o
+    0x08001638   0x08001638   0x0000000c   Code   RO         5338    i.MyCAN_GetTxOkCount  mycan.o
+    0x08001644   0x08001644   0x00000098   Code   RO         5339    i.MyCAN_Init        mycan.o
+    0x080016dc   0x080016dc   0x0000006c   Code   RO         5340    i.MyCAN_ParseFeedback  mycan.o
+    0x08001748   0x08001748   0x000000e4   Code   RO         5341    i.MyCAN_SendMotorCommand  mycan.o
+    0x0800182c   0x0800182c   0x00000002   Code   RO          159    i.NMI_Handler       stm32f4xx_it.o
+    0x0800182e   0x0800182e   0x00000002   PAD
+    0x08001830   0x08001830   0x00000078   Code   RO          372    i.NVIC_Init         misc.o
+    0x080018a8   0x080018a8   0x00000014   Code   RO          373    i.NVIC_PriorityGroupConfig  misc.o
+    0x080018bc   0x080018bc   0x00000002   Code   RO          160    i.PendSV_Handler    stm32f4xx_it.o
+    0x080018be   0x080018be   0x00000002   PAD
+    0x080018c0   0x080018c0   0x00000020   Code   RO         3038    i.RCC_AHB1PeriphClockCmd  stm32f4xx_rcc.o
+    0x080018e0   0x080018e0   0x00000020   Code   RO         3047    i.RCC_APB1PeriphClockCmd  stm32f4xx_rcc.o
+    0x08001900   0x08001900   0x00000020   Code   RO         3049    i.RCC_APB1PeriphResetCmd  stm32f4xx_rcc.o
+    0x08001920   0x08001920   0x00000020   Code   RO         3050    i.RCC_APB2PeriphClockCmd  stm32f4xx_rcc.o
+    0x08001940   0x08001940   0x000000e8   Code   RO         3059    i.RCC_GetClocksFreq  stm32f4xx_rcc.o
+    0x08001a28   0x08001a28   0x00000024   Code   RO         5432    i.RawCommandToDisplay  motor.o
+    0x08001a4c   0x08001a4c   0x00000014   Code   RO         5433    i.RawCommandToMilliDisplay  motor.o
+    0x08001a60   0x08001a60   0x00000020   Code   RO         5434    i.RawFeedbackToAmp  motor.o
+    0x08001a80   0x08001a80   0x00000002   Code   RO          161    i.SVC_Handler       stm32f4xx_it.o
+    0x08001a82   0x08001a82   0x00000002   PAD
+    0x08001a84   0x08001a84   0x000000cc   Code   RO         5250    i.Serial_Init       usart.o
+    0x08001b50   0x08001b50   0x00000158   Code   RO         5251    i.Serial_Printf     usart.o
+    0x08001ca8   0x08001ca8   0x0000003c   Code   RO         5252    i.Serial_ReadByte   usart.o
+    0x08001ce4   0x08001ce4   0x00000034   Code   RO         5253    i.Serial_SendArray  usart.o
+    0x08001d18   0x08001d18   0x00000020   Code   RO         5254    i.Serial_SendByte   usart.o
+    0x08001d38   0x08001d38   0x00000024   Code   RO         5255    i.Serial_SendSignedLong  usart.o
+    0x08001d5c   0x08001d5c   0x0000001c   Code   RO         5256    i.Serial_SendString  usart.o
+    0x08001d78   0x08001d78   0x00000080   Code   RO         5257    i.Serial_SendUnsignedLong  usart.o
+    0x08001df8   0x08001df8   0x000000ec   Code   RO          331    i.SetSysClock       system_stm32f4xx.o
+    0x08001ee4   0x08001ee4   0x0000003c   Code   RO         5435    i.StopMotor         motor.o
+    0x08001f20   0x08001f20   0x00000002   Code   RO          162    i.SysTick_Handler   stm32f4xx_it.o
+    0x08001f22   0x08001f22   0x00000002   PAD
+    0x08001f24   0x08001f24   0x00000068   Code   RO          333    i.SystemInit        system_stm32f4xx.o
+    0x08001f8c   0x08001f8c   0x00000024   Code   RO         5521    i.TIM2_IRQHandler   motor_timer.o
+    0x08001fb0   0x08001fb0   0x00000006   Code   RO         4429    i.TIM_ClearITPendingBit  stm32f4xx_tim.o
+    0x08001fb6   0x08001fb6   0x00000018   Code   RO         4434    i.TIM_Cmd           stm32f4xx_tim.o
+    0x08001fce   0x08001fce   0x00000022   Code   RO         4455    i.TIM_GetITStatus   stm32f4xx_tim.o
+    0x08001ff0   0x08001ff0   0x00000012   Code   RO         4459    i.TIM_ITConfig      stm32f4xx_tim.o
+    0x08002002   0x08002002   0x00000002   PAD
+    0x08002004   0x08002004   0x00000084   Code   RO         4506    i.TIM_TimeBaseInit  stm32f4xx_tim.o
+    0x08002088   0x08002088   0x00000012   Code   RO         4507    i.TIM_TimeBaseStructInit  stm32f4xx_tim.o
+    0x0800209a   0x0800209a   0x00000002   PAD
+    0x0800209c   0x0800209c   0x00000008   Code   RO         5342    i.TestCAN           mycan.o
+    0x080020a4   0x080020a4   0x00000074   Code   RO         5258    i.USART1_IRQHandler  usart.o
+    0x08002118   0x08002118   0x00000018   Code   RO         4988    i.USART_Cmd         stm32f4xx_usart.o
+    0x08002130   0x08002130   0x0000001a   Code   RO         4991    i.USART_GetFlagStatus  stm32f4xx_usart.o
+    0x0800214a   0x0800214a   0x00000054   Code   RO         4992    i.USART_GetITStatus  stm32f4xx_usart.o
+    0x0800219e   0x0800219e   0x0000004a   Code   RO         4994    i.USART_ITConfig    stm32f4xx_usart.o
+    0x080021e8   0x080021e8   0x000000d4   Code   RO         4995    i.USART_Init        stm32f4xx_usart.o
+    0x080022bc   0x080022bc   0x0000000a   Code   RO         5002    i.USART_ReceiveData  stm32f4xx_usart.o
+    0x080022c6   0x080022c6   0x00000008   Code   RO         5005    i.USART_SendData    stm32f4xx_usart.o
+    0x080022ce   0x080022ce   0x00000018   Code   RO         5011    i.USART_StructInit  stm32f4xx_usart.o
+    0x080022e6   0x080022e6   0x00000004   Code   RO          163    i.UsageFault_Handler  stm32f4xx_it.o
+    0x080022ea   0x080022ea   0x00000002   Code   RO         5564    i.Vofa_Init         vofa.o
+    0x080022ec   0x080022ec   0x00000082   Code   RO         5566    i.Vofa_SendDataWithLabel  vofa.o
+    0x0800236e   0x0800236e   0x00000002   PAD
+    0x08002370   0x08002370   0x00000104   Code   RO         5567    i.Vofa_SendMotorStatus  vofa.o
+    0x08002474   0x08002474   0x0000000e   Code   RO         5653    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08002482   0x08002482   0x00000002   Code   RO         5654    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08002484   0x08002484   0x0000000e   Code   RO         5655    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08002492   0x08002492   0x00000002   PAD
+    0x08002494   0x08002494   0x000000e8   Code   RO            4    i.main              main.o
+    0x0800257c   0x0800257c   0x00000020   Data   RO         5651    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08002580, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x080025ec, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002530, Size: 0x000004a8, Max: 0x00020000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800259c, Size: 0x000004a8, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08002530   0x00000014   Data   RW            5    .data               main.o
-    0x20000014   0x08002544   0x00000010   Data   RW         2990    .data               stm32f4xx_rcc.o
-    0x20000024   0x08002554   0x00000006   Data   RW         5159    .data               usart.o
-    0x2000002a   0x0800255a   0x00000002   PAD
-    0x2000002c   0x0800255c   0x00000008   Data   RW         5243    .data               mycan.o
-    0x20000034   0x08002564   0x00000017   Data   RW         5334    .data               motor.o
-    0x2000004b   0x0800257b   0x00000001   PAD
-    0x2000004c   0x0800257c   0x00000004   Data   RW         5416    .data               motor_timer.o
-    0x20000050        -       0x00000040   Zero   RW         5158    .bss                usart.o
-    0x20000090        -       0x00000014   Zero   RW         5242    .bss                mycan.o
-    0x200000a4   0x08002580   0x00000004   PAD
-    0x200000a8        -       0x00000400   Zero   RW         5138    STACK               startup_stm32f40xx.o
+    0x20000000   0x0800259c   0x00000014   Data   RW            5    .data               main.o
+    0x20000014   0x080025b0   0x00000010   Data   RW         3091    .data               stm32f4xx_rcc.o
+    0x20000024   0x080025c0   0x00000006   Data   RW         5260    .data               usart.o
+    0x2000002a   0x080025c6   0x00000002   PAD
+    0x2000002c   0x080025c8   0x00000008   Data   RW         5344    .data               mycan.o
+    0x20000034   0x080025d0   0x00000017   Data   RW         5436    .data               motor.o
+    0x2000004b   0x080025e7   0x00000001   PAD
+    0x2000004c   0x080025e8   0x00000004   Data   RW         5522    .data               motor_timer.o
+    0x20000050        -       0x00000040   Zero   RW         5259    .bss                usart.o
+    0x20000090        -       0x00000014   Zero   RW         5343    .bss                mycan.o
+    0x200000a4   0x080025ec   0x00000004   PAD
+    0x200000a8        -       0x00000400   Zero   RW         5239    STACK               startup_stm32f40xx.o
 
 
 ==============================================================================
@@ -1807,24 +1811,24 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       232         20          0         20          0     302643   main.o
+       232         20          0         20          0     267571   main.o
        140         24          0          0          0       1743   misc.o
-      2704       1100          0         23          0       7862   motor.o
+      2812       1178          0         23          0       8586   motor.o
        154         10          0          4          0       2127   motor_timer.o
-       842         58          0          8         20       9230   mycan.o
+       842         58          0          8         20       9454   mycan.o
         36          8        392          0       1024        868   startup_stm32f40xx.o
       1414         38          0          0          0       8149   stm32f4xx_can.o
        232          0          0          0          0       2569   stm32f4xx_gpio.o
-        26          0          0          0          0       4214   stm32f4xx_it.o
+        26          0          0          0          0     299630   stm32f4xx_it.o
        360         42          0         16          0       5660   stm32f4xx_rcc.o
        232         28          0          0          0       4667   stm32f4xx_tim.o
        462          8          0          0          0       6576   stm32f4xx_usart.o
        340         32          0          0          0       1537   system_stm32f4xx.o
-      1000        102          0          6         64       7417   usart.o
-       772         26          0          0          0       5480   vofa.o
+      1000        102          0          6         64       7585   usart.o
+       772         26          0          0          0       5596   vofa.o
 
     ----------------------------------------------------------------------
-      8972       1496        424         80       1112     370742   Object Totals
+      9080       1574        424         80       1112     632318   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         26          0          0          3          4          0   (incl. Padding)
 
@@ -1864,15 +1868,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      9096       1512        424         80       1112     362882   Grand Totals
-      9096       1512        424         80       1112     362882   ELF Image Totals
-      9096       1512        424         80          0          0   ROM Totals
+      9204       1590        424         80       1112     624358   Grand Totals
+      9204       1590        424         80       1112     624358   ELF Image Totals
+      9204       1590        424         80          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 9520 (   9.30kB)
+    Total RO  Size (Code + RO Data)                 9628 (   9.40kB)
     Total RW  Size (RW Data + ZI Data)              1192 (   1.16kB)
-    Total ROM Size (Code + RO Data + RW Data)       9600 (   9.38kB)
+    Total ROM Size (Code + RO Data + RW Data)       9708 (   9.48kB)
 
 ==============================================================================
 

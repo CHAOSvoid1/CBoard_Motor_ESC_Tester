@@ -30,7 +30,7 @@ typedef struct
 {
     Motor_Feedback_t feedback;
     int16_t command_raw;
-    float command_amp;
+    float command_display;
     float feedback_current_amp;
     uint32_t rx_frequency_hz;
     uint32_t tx_ok_count;

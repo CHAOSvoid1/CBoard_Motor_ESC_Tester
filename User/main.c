@@ -42,7 +42,7 @@ int main(void)
 
         if ((uint32_t)(now_ms - last_control_ms) >= MOTOR_CONTROL_PERIOD_MS) {
             last_control_ms = now_ms;
-            MyCAN_SendMotorCurrent(TEST_ESC_ID, Motor_Test_GetCommandRaw());
+            MyCAN_SendMotorCommand(TEST_MOTOR_ID, Motor_Test_GetCommandRaw());
         }
 
         if ((uint32_t)(now_ms - last_rx_rate_ms) >= 1000u) {
